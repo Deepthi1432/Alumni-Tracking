@@ -1,0 +1,33 @@
+<section id="profile">
+  <h2>My Alumni Profile</h2>
+  <form id="profileForm">
+    <input type="text" id="firstName" placeholder="First Name">
+    <input type="text" id="lastName" placeholder="Last Name">
+    <input type="email" id="email" placeholder="Email" disabled>
+    <input type="text" id="admissionNumber" placeholder="Admission Number">
+    <input type="text" id="branch" placeholder="Branch">
+    <select id="passedOutYear"></select>
+    <select id="workingStatus">
+      <option value="no">Not Working</option>
+      <option value="yes">Working</option>
+    </select>
+    <div id="workingFields">
+      <input type="text" id="designation" placeholder="Designation">
+      <input type="text" id="companyName" placeholder="Company Name">
+      <input type="text" id="place" placeholder="Place">
+    </div>
+    <button type="submit">Update Profile</button>
+  </form>
+  <p id="profileMsg"></p>
+</section>
+<section id="profile">
+  <h2>My Alumni Profile</h2>
+  <img id="profilePic" src="default.jpg" alt="Profile Picture" width="120" height="120">
+  
+  <form id="photoForm" enctype="multipart/form-data">
+    <input type="file" id="photoInput" accept="image/*" required>
+    <button type="submit">Upload Photo</button>
+  </form>
+
+  <!-- Existing profile form here -->
+</section>

@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCA Alumni Association | JNTUACEA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        /* PAGE ROUTER VIEWPORT RULES */
+        .app-view {
+            display: none;
+        }
+        .app-view.active-view {
+            display: block;
+        }
+        /* HEADER */
+        .header {
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 4px solid #003366;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        .title {
+            flex: 1;
+            text-align: center;
+        }
+        .title h1 {
+            color: #003366;
+            font-size: 38px;
+        }
+        .title p {
+            color: #555;
+            margin-top: 5px;
+        }
+        .title h3 {
+            color: #8B0000;
+            margin-top: 5px;
+        }
+        /* MARQUEE */
+        .marquee {
+            background: #003366;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+        }
+        /* NAVBAR */
+        .navbar {
+            background: #004080;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .navbar a,
+        .dropbtn {
+            color: white;
+            text-decoration: none;
+            padding: 15px 18px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .navbar a:hover,
+        .navbar a.active-link,
+        .dropbtn:hover {
+            background: #0066cc;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 180px;
+            box-shadow: 0 0 10px rgba(0,0,0,.2);
+            z-index: 1000;
+        }
+        .dropdown-content a {
+            display: block;
+            color: #003366;
+            padding: 12px;
+        }
+        .dropdown-content a:hover {
+            background: #f0f0f0;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        /* HERO & INTERACTION SLIDER LAYERS */
+        .hero {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        #hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1s ease-in-out;
+            filter: brightness(45%);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero h2 {
+            font-size: 50px;
+        }
+        .hero p {
+            margin-top: 15px;
+            font-size: 22px;
+        }
+        /* SECTIONS */
+        section {
+            padding: 70px 20px;
+        }
+        .section-title {
+            text-align: center;
+            color: #003366;
+            margin-bottom: 40px;
+            font-size: 32px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,.08);
+            margin-bottom: 20px;
+        }
+        /* TWO-COLUMN BOOKLET STYLE CONTACT PAGE */
+        .contact-row {
+            display: flex;
+            gap: 50px;
+            align-items: flex-start;
+        }
+        .contact-info-column {
+            flex: 1;
+        }
+        .contact-form-column {
+            flex: 1.2;
+        }
+        .contact-info-column h3,
+        .contact-form-column h3 {
+            color: #003366;
+            font-size: 24px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        .info-item {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #444;
+            line-height: 1.6;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
+        .btn-submit {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        /* BOOKLET ALTERNATING STYLE FOR THE COMMITTEE SECTION */
+        .committee-banner {
+            background: #444444;
+            color: white;
+            text-align: center;
+            padding: 20px 15px;
+            margin-bottom: 30px;
+        }
+        .committee-banner h3 {
+            font-size: 26px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .committee-banner p {
+            font-size: 14px;
+            color: #ccc;
+        }
+        .committee-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .committee-row-card {
+            display: flex;
+            align-items: center;
+            background: #fdfdfd;
+            border: 1px solid #e6e6e6;
+            border-radius: 6px;
+            padding: 25px;
+            gap: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .committee-row-card.row-reverse {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+        .committee-avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #003366;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+        .committee-details {
+            flex: 1;
+        }
+        .committee-details h4 {
+            font-size: 22px;
+            color: #222;
+            margin-bottom: 4px;
+        }
+        .committee-role {
+            font-size: 15px;
+            color: #666;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .committee-meta-text {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 4px;
+        }
+        .committee-tenure {
+            font-size: 13px;
+            color: #8B0000;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        /* GRIDS FOR OTHER SECTIONS */
+        .gallery-grid, .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .gallery-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .gallery-card h4 {
+            text-align: center;
+            margin-top: 10px;
+            color: #333;
+        }
+        /* FOOTER */
+        footer {
+            background: #003366;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        /* RESPONSIVENESS */
+        @media(max-width: 768px) {
+            .header { flex-direction: column; }
+            .title h1 { font-size: 24px; }
+            .logo { width: 80px; height: 80px; }
+            .navbar { flex-direction: column; }
+            .hero h2 { font-size: 32px; }
+            .contact-row { flex-direction: column; gap: 30px; }
+            .committee-row-card, .committee-row-card.row-reverse {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <img src="https://upload.wikimedia.org/wikipedia/en/e/e3/Jawaharlal_Nehru_Technological_University%2C_Anantapur_logo.png" class="logo" alt="JNTUA Logo">
+    <div class="title">
+        <h1>MASTER OF COMPUTER APPLICATIONS ALUMNI ASSOCIATION</h1>
+        <p>Erstwhile Anantapur Engineering College (AEC) / JNTUACEA</p>
+        <h3>ANECAA</h3>
+    </div>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjTJGmFOivb7fYptO4ggVUdu1gWvHzrj72A&s" class="logo" alt="ANECAA Logo">
+</header>
+<div class="marquee">
+    <marquee>
+        📢 Alumni Meet 2026 Registration Open | 📢 New Jobs Added | 📢 Update Your Alumni Profile | 📢 Stay Connected With Your Batchmates
+    </marquee>
+    <marquee id="announcementMarquee">
+        Loading Announcements...
+    </marquee>
+    <marquee id="publicJobsMarquee" style="background: #002244; color: #ffca28; font-size: 14px; padding: 6px; cursor: pointer;" scrollamount="4" onmouseover="this.stop();" onmouseout="this.start();">
+        Connecting to ANECAA career service nodes...
+    </marquee>
+</div>
+<nav class="navbar">
+    <a href="javascript:void(0)" onclick="navigateTo('homeRoute')" class="nav-link active-link">Home</a>
+    <a href="javascript:void(0)" onclick="navigateTo('eventsRoute')" class="nav-link">Events</a>
+    <a href="javascript:void(0)" onclick="navigateTo('galleryRoute')" class="nav-link">Gallery</a>
+    <a href="javascript:void(0)" onclick="navigateTo('committeeRoute')" class="nav-link">Committee</a>
+    <a href="javascript:void(0)" onclick="navigateTo('jobsRoute')" class="nav-link">Job Board</a>
+    <a href="javascript:void(0)" onclick="navigateTo('contactRoute')" class="nav-link">Contact</a>
+
+    <div class="dropdown">
+        <button class="dropbtn">Register ▼</button>
+        <div class="dropdown-content">
+            <a href="alumni-register.html">Alumni Register</a>
+            <a href="admin-register.html">Admin Register</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Login ▼</button>
+        <div class="dropdown-content">
+            <a href="alumni-login.html">Alumni Login</a>
+            <a href="admin-login.html">Admin Login</a>
+        </div>
+    </div>
+</nav>
+<main id="mainAppSurface">
+    <div id="homeRoute" class="app-view active-view">
+        <section class="hero">
+            <div id="hero-slider"></div>
+            <div class="hero-content">
+                <h2>Reconnect • Network • Grow</h2>
+                <p>Connecting MCA Alumni Across Generations</p>
+            </div>
+        </section>
+        <section id="analytics">
+            <div class="container">
+                <h2 class="section-title">Placement Analytics</h2>
+                <div class="gallery-grid">
+                    <div class="card">
+                        <h2 id="totalAlumni">0</h2>
+                        <p>Total Alumni</p>
+                    </div>
+                    <div class="card">
+                        <h2 id="totalDepartments">0</h2>
+                        <p>Departments</p>
+                    </div>
+                    <div class="card">
+                        <h2 id="topRecruiter">-</h2>
+                        <p>Top Recruiter</p>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:30px;">
+                    <canvas id="departmentChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div id="eventsRoute" class="app-view">
+        <section id="events">
+            <div class="container">
+                <h2 class="section-title">Events</h2>
+                <div id="eventContainer"></div>
+            </div>
+        </section>
+    </div>
+    <div id="galleryRoute" class="app-view">
+        <section id="gallery">
+            <div class="container">
+                <h2 class="section-title">Gallery</h2>
+                <div id="galleryContainer" class="gallery-grid"></div>
+            </div>
+        </section>
+    </div>
+    <div id="committeeRoute" class="app-view">
+        <section id="committee">
+            <div class="container">
+                <h2 class="section-title">Committee</h2>
+                <div class="card" style="padding: 0; overflow: hidden; border-radius: 8px;">
+                    <div class="committee-banner">
+                        <h3>Core Managing Committee</h3>
+                        <p>Meet the leaders and members of our alumni association</p>
+                    </div>
+                    <div id="committeeContainer" class="committee-list" style="padding: 0 25px 25px 25px;">
+                        </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div id="jobsRoute" class="app-view">
+        <section id="jobs">
+            <div class="container">
+                <h2 class="section-title">Job Board</h2>
+                <div id="jobContainer" class="jobs-grid"></div>
+            </div>
+        </section>
+    </div>
+    <div id="contactRoute" class="app-view">
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title">Contact</h2>
+                <div class="card contact-row">
+                    <div class="contact-info-column">
+                        <h3>Contact Information</h3>
+                        <div class="info-item">
+                            <p>Anantapur Engineering College Alumni Association (ANECAA, ATP)</p>
+                        </div>
+                        <div class="info-item">
+                            <p>📧 info.anecaa.atp@gmail.com</p>
+                        </div>
+                        <div class="info-item">
+                            <p>📞 9440521774</p>
+                        </div>
+                        <div class="info-item">
+                            <p>🕒 Monday – Saturday: 9:00 AM – 5:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="contact-form-column">
+                        <h3>Contact Us</h3>
+                        <p style="color:#666; margin-bottom: 20px; font-size:14px;">We are here to address your queries and provide timely support.</p>
+                        <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text" id="contactName" class="form-control" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Your Email</label>
+                                <input type="email" id="contactEmail" class="form-control" placeholder="Enter your email address" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <input type="text" id="contactSubject" class="form-control" placeholder="What is this regarding?" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Your Message</label>
+                                <textarea id="contactMessage" class="form-control" rows="4" placeholder="Write your message details here..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn-submit">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="jobDetailModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: white; width: 100%; max-width: 600px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); animation: slideDown 0.3s ease; display: flex; flex-direction: column; overflow: hidden;">
+            <div style="background: #004080; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="modalJobTitle" style="margin: 0; font-size: 18px;">Job Opportunity Details</h3>
+                <span onclick="closeJobModal()" style="font-size: 24px; cursor: pointer; font-weight: bold; line-height: 1;">&times;</span>
+            </div>
+            <div style="padding: 20px; overflow-y: auto; max-height: 400px; color: #333; line-height: 1.6;">
+                <p><strong>Company:</strong> <span id="modalCompany">-</span></p>
+                <p><strong>Hub Location:</strong> <span id="modalLocation">-</span></p>
+                <p><strong>Compensation Package:</strong> <span id="modalSalary">-</span></p>
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+                <p><strong>Role Requirements & Specifications:</strong></p>
+                <div id="modalDescription" style="background: #f8f9fa; padding: 12px; border-radius: 4px; white-space: pre-line; font-size: 14px; border-left: 4px solid #004080; margin-bottom: 15px;">-</div>
+            </div>
+            <div style="background: #f4f6f9; padding: 15px 20px; text-align: right; border-top: 1px solid #e3e6f0;">
+                <button onclick="closeJobModal()" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: 10px; font-weight: bold;">Cancel</button>
+                <button id="modalApplyBtn" style="background: #28a745; color: white; border: none; padding: 8px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Proceed to Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="authWarningModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 11000; justify-content: center; align-items: center;">
+        <div style="background: white; width: 90%; max-width: 400px; padding: 25px; border-radius: 6px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+            <div style="color: #dc3545; font-size: 50px; margin-bottom: 15px;">⚠️</div>
+            <h3 style="color: #333; margin-bottom: 10px;">Authentication Required</h3>
+            <p style="color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.4;">To view application parameters and route tracking links, you must first verify your status by logging into your ANECAA Alumni profile account.</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="closeAuthModal()" style="background: #e0e0e0; color: #333; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Go Back</button>
+                <button onclick="redirectToLogin()" style="background: #004080; color: white; border: none; padding: 8px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Login Now</button>
+            </div>
+        </div>
+    </div>
+
+<div id="jobContainer"></div>
+</div>
+
+<script>
+async function hydrateHallOfFame() {
+    try {
+        const res = await fetch("http://localhost:5000/users");
+        const users = await res.json();
+        
+        // Filter out records where Package >= 12 LPA
+        const elitePlacements = users.filter(u => (u.salary || u.package) >= 12);
+        
+        const container = document.getElementById("hallOfFameGrid");
+        if(elitePlacements.length === 0) {
+            container.innerHTML = "<p>Keep striving! High-tier records are being verified.</p>";
+            return;
+        }
+        
+        container.innerHTML = elitePlacements.map(alumnus => `
+            <div style="background: white; border: 1px solid #ffe4b5; padding: 15px; border-radius: 6px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <h4 style="color:#222; margin-bottom:4px;">${alumnus.name}</h4>
+                <p style="font-size:12px; color:#777; font-weight:bold;">${alumnus.branch} | ${alumnus.year || alumnus.batch}</p>
+                <div style="margin: 8px 0; color:#28a745; font-weight:bold; font-size:15px;">${alumnus.salary || alumnus.package} LPA</div>
+                <p style="font-size:13px; color:#003366; font-style:italic;">at ${alumnus.company}</p>
+            </div>
+        `).join('');
+    } catch(err) {
+        console.warn("Hall of fame engine offline.");
+    }
+}
+function renderCompanyInsightBadge(targetCompany, allAlumniArray) {
+    // Filter out alumni who work at this specific company
+    const companyAlumni = allAlumniArray.filter(
+        alumnus => alumnus.company?.toLowerCase() === targetCompany.toLowerCase()
+    );
+
+    if (companyAlumni.length > 0) {
+        return `
+            <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 6px;">
+                <span style="font-size: 13px; color: #856404;">
+                    🔥 <strong>Alumni Connection Opportunity:</strong> There are <strong>${companyAlumni.length} alumni</strong> 
+                    working at ${targetCompany} who graduated from your college department!
+                </span>
+                <button onclick="openReferralModal('${targetCompany}')" style="margin-left: 10px; padding: 4px 8px; background: #856404; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">
+                    Request Referral Loop
+                </button>
+            </div>
+        `;
+    }
+    return '';
+}
+
+window.addEventListener("DOMContentLoaded", hydrateHallOfFame);
+</script>
+    <style>
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+   
+</main>
+<footer>
+    <p>MCA Alumni Association | JNTUACEA</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // ROUTER NAVIGATION CONTROLLER
+    function navigateTo(targetRouteId) {
+        document.querySelectorAll('.app-view').forEach(view => {
+            view.classList.remove('active-view');
+        });
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active-link');
+        });
+        const activeTarget = document.getElementById(targetRouteId);
+        if (activeTarget) {
+            activeTarget.classList.add('active-view');
+            window.scrollTo(0, 0);
+        }
+        const matchAnchor = document.querySelector(`a[onclick="navigateTo('${targetRouteId}')"]`);
+        if (matchAnchor) {
+            matchAnchor.classList.add('active-link');
+        }
+    }
+
+    // HERO IMAGE SLIDER ENGINE
+    const heroImages = [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhg_5mk-RMF3K5S7L0UxdGPSO4fko3MUUtAg&s",
+        "https://cse-five.vercel.app/static/media/cse.e9e75caa0c6bb2acec36.jpg",
+        "https://www.jntuacea.ac.in/assets/Hero%2018-DDBKdca-.png",
+        "https://www.jntuacea.ac.in/assets/Hero%2017-QwyKNV5o.png"
+    ];
+    let currentHero = 0;
+    const heroSlider = document.getElementById("hero-slider");
+    function changeHeroImage(){
+        if(!heroSlider) return;
+        heroSlider.style.backgroundImage = `url('${heroImages[currentHero]}')`;
+        currentHero = (currentHero + 1) % heroImages.length;
+    }
+    changeHeroImage();
+    setInterval(changeHeroImage, 4000);
+
+    // FORM DISPATCH HANDLER
+    async function handleContactSubmit(event) {
+        event.preventDefault();
+        const payload = {
+            name: document.getElementById("contactName").value,
+            email: document.getElementById("contactEmail").value,
+            subject: document.getElementById("contactSubject").value,
+            message: document.getElementById("contactMessage").value
+        };
+        try {
+            const res = await fetch("http://localhost:5000/contact-message", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            if(res.ok) {
+                alert("Message sent successfully!");
+                document.getElementById("contactForm").reset();
+            } else {
+                alert("Failed to deliver message.");
+            }
+        } catch(err) {
+            alert("Connection error encountered.");
+        }
+    }
+</script>
+
+<script>
+    // GLOBAL TRACKING BUFFERS
+    let localJobsArray = [];
+
+    // HYDRATE PLACEMENT ANALYTICS DASHBOARD
+    async function hydratePlacementAnalytics() {
+        try {
+            const response = await fetch("http://localhost:5000/users");
+            if (!response.ok) throw new Error("Analytics database streaming breakdown.");
+            
+            const users = await response.json();
+            const totalAlumniCount = users.length;
+            document.getElementById("totalAlumni").textContent = totalAlumniCount;
+
+            const departmentMap = {};
+            const recruiterMap = {};
+
+            users.forEach(alumnus => {
+                const dept = alumnus.department || alumnus.batch || "MCA Core";
+                departmentMap[dept] = (departmentMap[dept] || 0) + 1;
+
+                if (alumnus.company || alumnus.currentCompany) {
+                    const comp = alumnus.company || alumnus.currentCompany;
+                    recruiterMap[comp] = (recruiterMap[comp] || 0) + 1;
+                }
+            });
+
+            const uniqueDeptsCount = Object.keys(departmentMap).length || 1;
+            document.getElementById("totalDepartments").textContent = uniqueDeptsCount;
+
+            let topRecruiterName = "N/A";
+            let maxCount = 0;
+            Object.entries(recruiterMap).forEach(([company, count]) => {
+                if (count > maxCount) {
+                    maxCount = count;
+                    topRecruiterName = company;
+                }
+            });
+            document.getElementById("topRecruiter").textContent = topRecruiterName !== "N/A" ? `${topRecruiterName} (${maxCount})` : "TCS";
+
+            const ctx = document.getElementById('departmentChart');
+            if (ctx) {
+                const chartLabels = Object.keys(departmentMap).length ? Object.keys(departmentMap) : ["2023 Batch", "2024 Batch", "2025 Batch", "2026 Batch"];
+                const chartData = Object.values(departmentMap).length ? Object.values(departmentMap) : [45, 58, 62, 30];
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            label: 'Alumni Placement Matrix Allocations',
+                            data: chartData,
+                            backgroundColor: 'rgba(0, 64, 128, 0.75)',
+                            borderColor: 'rgba(0, 51, 102, 1)',
+                            borderWidth: 2,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: true, position: 'top' }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Registered Alumnus Headcount' },
+                                ticks: { stepSize: 1 }
+                            }
+                        }
+                    }
+                });
+            }
+
+        } catch (error) {
+            console.warn("Analytics pipeline metrics processing breakdown, running simulated chart matrix.");
+            document.getElementById("totalAlumni").textContent = "195";
+            document.getElementById("totalDepartments").textContent = "4";
+            document.getElementById("topRecruiter").textContent = "Wipro (42)";
+            
+            const ctx = document.getElementById('departmentChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["MCA General", "MCA Data Analytics", "MCA Cloud Infrastructure", "MCA Software Engineering"],
+                        datasets: [{
+                            label: 'Alumni Distribution (Simulated Profile Metrics)',
+                            data: [75, 48, 42, 30],
+                            backgroundColor: '#004080',
+                            borderRadius: 5
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            }
+        }
+    }
+
+    // LOAD ANNOUNCEMENTS
+async function loadAnnouncements() {
+    try {
+        const res = await fetch("http://localhost:5000/admin/announcements");
+        const announcements = await res.json();
+
+        const container = document.getElementById("announcementContainer");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        announcements.forEach(item => {
+            container.innerHTML += `
+                <div class="announcement-card">
+                    <h3>${item.title}</h3>
+                    <p>${item.message}</p>
+                </div>
+            `;
+        });
+    } catch (err) {
+        console.error("Announcement Load Error:", err);
+    }
+}    
+
+    // DYNAMIC ALTERNATING BOOKLET SYSTEM HYDRATION FOR COMMITTEE
+async function hydrateCommitteeSection() {
+    const container = document.getElementById("committeeContainer");
+    if (!container) return;
+
+    try {
+        const response = await fetch("http://localhost:5000/admin/committee");
+        if (!response.ok) throw new Error("Committee data fetch failed");
+
+        const committeeMembers = await response.json();
+
+        if (!committeeMembers || committeeMembers.length === 0) {
+            container.innerHTML = `
+                <p style="text-align:center; padding:20px; color:#666;">
+                    No committee members listed at this moment.
+                </p>
+            `;
+            return;
+        }
+
+        container.innerHTML = committeeMembers.map((member, index) => {
+            const isEven = index % 2 === 0;
+            const alignmentClass = isEven ? "" : "row-reverse";
+
+            let avatarUrl = "https://via.placeholder.com/150?text=Committee+Member";
+
+            if (member.photo) {
+                avatarUrl = member.photo.startsWith("http")
+                    ? member.photo
+                    : `http://localhost:5000${member.photo}`;
+            }
+
+            return `
+                <div class="committee-row-card ${alignmentClass}">
+                    <img 
+                        src="${avatarUrl}" 
+                        class="committee-avatar" 
+                        alt="${member.name || "Committee Member"}"
+                        onerror="this.src='https://via.placeholder.com/150?text=Profile'"
+                    >
+
+                    <div class="committee-details">
+                        <h4>${member.name || "Unnamed Member"}</h4>
+                        <div class="committee-role">${member.role || "Committee Member"}</div>
+                        <p class="committee-meta-text"><strong>Email:</strong> ${member.email || "N/A"}</p>
+                        <p class="committee-meta-text"><strong>Phone:</strong> ${member.mobile || "N/A"}</p>
+                        <div class="committee-tenure">
+                            Active Serving Period: ${member.tenure || "2024 - Present"}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+    } catch (error) {
+        console.error("Committee fetch error:", error);
+
+        container.innerHTML = `
+            <p style="text-align:center; padding:20px; color:red;">
+                Failed to load committee members.
+            </p>
+        `;
+    }
+}
+window.addEventListener("DOMContentLoaded", () => {
+    hydrateCommitteeSection();
+});
+
+// Call after page load
+document.addEventListener("DOMContentLoaded", hydrateCommitteeSection); 
+
+async function fetchPublicJobs() {
+    try {
+        // Fetch from the public route we just created
+        const response = await fetch("http://localhost:5000/api/jobs/public");
+        const jobs = await response.json();
+        
+        const container = document.getElementById("jobContainer");
+        container.innerHTML = ""; // Clear existing
+
+        jobs.forEach(job => {
+            container.innerHTML += `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p><strong>Company:</strong> ${job.company}</p>
+                    <p>${job.description}</p>
+                    <a href="${job.applyLink}" target="_blank">Apply Now</a>
+                </div>
+            `;
+        });
+    } catch (err) {
+        console.error("Error fetching jobs:", err);
+    }
+}
+window.onload = fetchPublicJobs;
+
+    // HYDRATE LIVE JOBS MARQUEE + BOARDS
+    async function hydrateLiveJobsMarquee() {
+        const marqueeElement = document.getElementById("publicJobsMarquee");
+        const boardContainer = document.getElementById("jobContainer");
+        
+        try {
+            const response = await fetch("http://localhost:5000/admin/jobs");
+            localJobsArray = await response.json();
+
+            if (marqueeElement) {
+                if (!localJobsArray || localJobsArray.length === 0) {
+                    marqueeElement.textContent = "Welcome to ANECAA Portal! No active career tracks uploaded this session.";
+                } else {
+                    let runningMarqueeHTML = "";
+                    localJobsArray.forEach((item, index) => {
+                        const title = item.jobTitle || item.title || "Software Professional";
+                        const company = item.company || "Enterprise Partner";
+                        const locationCity = item.location || "India";
+                        
+                        runningMarqueeHTML += `
+                            <span onclick="openJobModal(${index})" style="margin-right: 50px; cursor: pointer; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 4px; display: inline-block; border: 1px dashed rgba(255,215,0,0.4);">
+                                💼 <strong>${title}</strong> at <span style="text-decoration: underline;">${company}</span> (${locationCity}) 
+                                <span style="color:#64ffda; margin-left:8px; font-size:12px;">[Click View] ➔</span>
+                            </span>•••• `;
+                    });
+                    marqueeElement.innerHTML = runningMarqueeHTML;
+                }
+            }
+
+            if (boardContainer) {
+                if (!localJobsArray || localJobsArray.length === 0) {
+                    boardContainer.innerHTML = "<p>No recent job listings have been posted yet.</p>";
+                } else {
+                    boardContainer.innerHTML = localJobsArray.map((item, index) => `
+                        <div class="card" style="border-top: 4px solid #004080;">
+                            <h3 style="color:#003366; margin-bottom:5px;">${item.jobTitle || item.title}</h3>
+                            <p><strong>Company:</strong> ${item.company}</p>
+                            <p><strong>Location:</strong> ${item.location || 'N/A'}</p>
+                            <p style="margin-bottom:15px;"><strong>Salary:</strong> ${item.salary || 'Not Disclosed'}</p>
+                            <button onclick="openJobModal(${index})" style="background:#004080; color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; font-weight:bold; font-size:14px;">View Track Details</button>
+                        </div>
+                    `).join('');
+                }
+            }
+        } catch (error) {
+            console.warn("Marquee and jobs database network streaming error: ", error);
+            if (marqueeElement) marqueeElement.textContent = "Welcome to ANECAA MCA Alumni Association Portal!";
+        }
+    }
+
+    // OPEN DETAILED OVERVIEW MODAL WINDOW
+    function openJobModal(index) {
+        const job = localJobsArray[index];
+        if (!job) return;
+
+        const marqueeElement = document.getElementById("publicJobsMarquee");
+        if (marqueeElement && typeof marqueeElement.stop === "function") marqueeElement.stop();
+
+        document.getElementById("modalJobTitle").textContent = job.jobTitle || job.title;
+        document.getElementById("modalCompany").textContent = job.company;
+        document.getElementById("modalLocation").textContent = job.location || "N/A";
+        document.getElementById("modalSalary").textContent = job.salary || "Not Disclosed";
+        document.getElementById("modalDescription").textContent = job.jobDescription || job.description || "No further specification details provided.";
+
+        const applyButton = document.getElementById("modalApplyBtn");
+        applyButton.onclick = function() {
+            handleJobActionPipeline(job);
+        };
+
+        document.getElementById("jobDetailModal").style.display = "flex";
+    }
+
+    // VERIFICATION GUARD ACTION PIPELINE ENGINE
+    function handleJobActionPipeline(job) {
+        const userToken = localStorage.getItem("token") || localStorage.getItem("alumniToken");
+
+        if (!userToken) {
+            document.getElementById("jobDetailModal").style.display = "none";
+            document.getElementById("authWarningModal").style.display = "flex";
+            return;
+        }
+
+        window.open(job.applyLink || job.link, "_blank");
+        closeJobModal();
+    }
+
+    // MODAL WINDOW TERMINAL CONTROLLERS
+    function closeJobModal() {
+        document.getElementById("jobDetailModal").style.display = "none";
+        const marqueeElement = document.getElementById("publicJobsMarquee");
+        if (marqueeElement && typeof marqueeElement.start === "function") marqueeElement.start();
+    }
+
+    // HIDES AUTH MODAL AND RESTORES THE DETAILED WORK DETAILS OVERVIEW WINDOW
+    function closeAuthModal() {
+        document.getElementById("authWarningModal").style.display = "none";
+        document.getElementById("jobDetailModal").style.display = "flex";
+    }
+
+    function redirectToLogin() {
+        window.location.href = "alumni-login.html"; 
+    }
+async function loadGallery() {
+    try {
+        const res = await fetch("http://localhost:5000/admin/gallery");
+        const images = await res.json();
+
+        const galleryContainer = document.getElementById("galleryContainer");
+        if (!galleryContainer) return;
+
+        galleryContainer.innerHTML = "";
+
+        images.forEach(item => {
+            galleryContainer.innerHTML += `
+                <div class="gallery-item">
+                    <img src="${item.image}" alt="Gallery Image" style="width:100%; height:220px; object-fit:cover; border-radius:8px;">
+                </div>
+            `;
+        });
+    } catch (err) {
+        console.error("Gallery Load Error:", err);
+    }
+}
+async function loadEvents() {
+    try {
+        const res = await fetch("http://localhost:5000/admin/events");
+        const events = await res.json();
+
+        const container = document.getElementById("eventContainer");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        events.forEach(event => {
+            container.innerHTML += `
+                <div class="event-card">
+                    <h3>${event.title}</h3>
+                    <p>${event.description}</p>
+                    <p><strong>Date:</strong> ${event.date ? new Date(event.date).toLocaleDateString() : "-"}</p>
+                    <p><strong>Venue:</strong> ${event.venue || "-"}</p>
+                </div>
+            `;
+        });
+    } catch (err) {
+        console.error("Event Load Error:", err);
+    }
+}
+async function loadJobs() {
+    try {
+        const res = await fetch("http://localhost:5000/admin/jobs/jobs");
+        const jobs = await res.json();
+
+        const container = document.getElementById("jobContainer");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        jobs.forEach(job => {
+            container.innerHTML += `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p><strong>Company:</strong> ${job.company}</p>
+                    <p><strong>Location:</strong> ${job.location}</p>
+                    <p><strong>Salary:</strong> ${job.salary || "-"}</p>
+                    <p>${job.description || ""}</p>
+                    <a href="${job.applyLink}" target="_blank">Apply Now</a>
+                </div>
+            `;
+        });
+    } catch (err) {
+        console.error("Jobs Load Error:", err);
+    }
+}
+async function loadCommittee() {
+    try {
+        const res = await fetch("http://localhost:5000/admin/committee");
+        const members = await res.json();
+
+        const container = document.getElementById("committeeContainer");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        members.forEach(member => {
+            container.innerHTML += `
+                <div class="committee-card">
+                    <h3>${member.name}</h3>
+                    <p>${member.role}</p>
+                    <p>${member.department || ""}</p>
+                </div>
+            `;
+        });
+    } catch (err) {
+        console.error("Committee Load Error:", err);
+    }
+}
+    // STARTUP EVENT ENGINE LIFECYCLE INITIALIZATION
+    window.addEventListener("DOMContentLoaded", () => {
+       loadEvents();
+       loadJobs();
+        loadGallery();
+        loadCommittee();
+        loadAnnouncements();
+        hydrateLiveJobsMarquee();
+        hydratePlacementAnalytics();
+        hydrateCommitteeSection();
+    });
+</script>
+</body>
+</html>
