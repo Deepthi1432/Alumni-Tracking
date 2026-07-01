@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alumni Association - Events</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-attachment: fixed;   /* scrolling effect */
+      background-size: cover;         /* fills screen without stretching */
+      background-position: center;    /* centers image */
+      color: white;
+    }
+    header, main, footer, section {
+      background: rgba(0,0,0,0.6); /* overlay for readability */
+      padding: 20px;
+      border-radius: 8px;
+    }
+    nav {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+    }
+    nav a:hover {
+      background: #0066cc;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="events">
+  <header>
+    <h1>Events</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="committee.html">Committee</a>
+      <a href="register.html">Register</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Upcoming Alumni Events</h2>
+    <p>Details about alumni meetups, conferences, and reunions will appear here.</p>
+  </main>
+
+  <footer>
+    <p>&copy; College Alumni Association</p>
+  </footer>
+  <div id="bg-slider"></div>
+
+<script>
+
+const images = [
+
+"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhg_5mk-RMF3K5S7L0UxdGPSO4fko3MUUtAg&s",
+
+"https://cse-five.vercel.app/static/media/cse.e9e75caa0c6bb2acec36.jpg",
+
+"https://www.jntuacea.ac.in/assets/Hero%2018-DDBKdca-.png",
+
+"https://www.jntuacea.ac.in/assets/Hero%2017-QwyKNV5o.png"
+
+];
+
+let current = 0;
+
+const slider =
+document.getElementById(
+"bg-slider"
+);
+
+function changeBackground(){
+
+    slider.style.backgroundImage =
+    `url('${images[current]}')`;
+
+    current =
+    (current + 1) %
+    images.length;
+
+}
+
+changeBackground();
+
+setInterval(
+changeBackground,
+5000
+);
+
+</script>
+</body>
+</html>

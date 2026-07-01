@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration | MCA Alumni Association</title>
+
+<link rel="stylesheet" href="css/style.css">
+<div id="bg-slider"></div>
+
+
+</head>
+<body>
+
+<header class="header">
+
+    <div class="logo-container">
+
+        <img src="https://upload.wikimedia.org/wikipedia/en/e/e3/Jawaharlal_Nehru_Technological_University%2C_Anantapur_logo.png"
+        alt="JNTUA Logo"
+        class="logo">
+
+    </div>
+
+    <div class="title-container">
+
+        <h1>
+            MASTER OF COMPUTER APPLICATIONS ALUMNI ASSOCIATION
+        </h1>
+
+        <p>
+            Erstwhile Anantapur Engineering College (AEC) | JNTUACEA
+        </p>
+
+        <h3>
+            ANECAA
+        </h3>
+
+    </div>
+
+    <div class="logo-container">
+
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjTJGmFOivb7fYptO4ggVUdu1gWvHzrj72A&s"
+        alt="ANECAA Logo"
+        class="logo">
+
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</header>
+
+<div class="marquee">
+
+<marquee>
+
+📢 Alumni Meet 2026 Registration Open |
+📢 New Jobs Added |
+📢 Update Your Alumni Profile |
+📢 Stay Connected With Your Batchmates
+
+</marquee>
+
+</div>
+
+<nav class="navbar">
+
+<a href="index.html">Home</a>
+
+<a href="index.html#events">Events</a>
+
+<a href="index.html#gallery">Gallery</a>
+
+<a href="index.html#committee">Committee</a>
+
+<a href="index.html#contact">Contact</a>
+
+<div class="dropdown">
+
+    <button class="dropbtn">
+        Register ▼
+    </button>
+
+    <div class="dropdown-content">
+
+        <a href="alumni-register.html">
+            Alumni Register
+        </a>
+
+        <a href="admin-register.html">
+            Admin Register
+        </a>
+
+    </div>
+
+</div>
+
+<div class="dropdown">
+
+    <button class="dropbtn">
+        Login ▼
+    </button>
+
+    <div class="dropdown-content">
+
+        <a href="alumni-login.html">
+            Alumni Login
+        </a>
+
+        <a href="admin-login.html">
+            Admin Login
+        </a>
+
+    </div>
+
+</div>
+
+</nav>
+
+<section class="login-section">
+
+<h2 class="section-title">
+    Admin Registration
+</h2>
+
+<div class="container">
+
+    <form id="adminRegisterForm"
+          class="form-container">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Admin Name"
+            required>
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Email ID"
+            required>
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required>
+
+        <button type="submit">
+            Register Admin
+        </button>
+    </form>
+
+</div>
+</section>
+
+<footer>
+<p>
+ MCA Alumni Association |
+    JNTUACEA
+</p>
+</footer>
+<script>
+
+document.getElementById(
+"adminRegisterForm"
+).addEventListener(
+"submit",
+async (e)=>{
+
+    e.preventDefault();
+
+    try{
+
+        const res =
+        await fetch(
+        "/admin/register",
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+
+                name:
+                e.target.name.value,
+
+                email:
+                e.target.email.value,
+
+                password:
+                e.target.password.value
+
+            })
+
+        });
+
+        const data =
+        await res.json();
+
+        if(data.message){
+
+            Swal.fire({
+
+                icon:"success",
+
+                title:"Registration Successful",
+
+                text:"Admin account created successfully!",
+
+                confirmButtonColor:"#003366"
+
+            }).then(()=>{
+
+                e.target.reset();
+
+                window.location.href =
+                "admin-login.html";
+
+            });
+
+        }
+        else{
+
+            Swal.fire({
+
+                icon:"error",
+
+                title:"Registration Failed",
+
+                text:
+                data.error ||
+                "Something went wrong",
+
+                confirmButtonColor:"#d33"
+
+            });
+
+        }
+
+    }
+    catch(err){
+
+        Swal.fire({
+
+            icon:"error",
+
+            title:"Server Error",
+
+            text:
+            "Unable to connect to server",
+
+            confirmButtonColor:"#d33"
+
+        });
+
+    }
+
+});
+
+</script>
+<div id="bg-slider"></div>
+
+<script>
+
+const images = [
+
+"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhg_5mk-RMF3K5S7L0UxdGPSO4fko3MUUtAg&s",
+
+"https://cse-five.vercel.app/static/media/cse.e9e75caa0c6bb2acec36.jpg",
+
+"https://www.jntuacea.ac.in/assets/Hero%2018-DDBKdca-.png",
+
+"https://www.jntuacea.ac.in/assets/Hero%2017-QwyKNV5o.png"
+
+];
+
+let current = 0;
+
+const slider =
+document.getElementById(
+"bg-slider"
+);
+
+function changeBackground(){
+
+    slider.style.backgroundImage =
+    `url('${images[current]}')`;
+
+    current =
+    (current + 1) %
+    images.length;
+
+}
+
+changeBackground();
+
+setInterval(
+changeBackground,
+5000
+);
+
+</script>
+</body>
+</html>

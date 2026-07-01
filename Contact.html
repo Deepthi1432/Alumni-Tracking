@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact - Alumni Association</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-attachment: fixed;   /* scrolling effect */
+      background-size: cover;         /* fills screen without stretching */
+      background-position: center;    /* centers image */
+      color: white;
+    }
+    header, main, footer, section {
+      background: rgba(0,0,0,0.6); /* overlay for readability */
+      padding: 20px;
+      border-radius: 8px;
+    }
+    nav {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+    }
+    nav a:hover {
+      background: #0066cc;
+      border-radius: 4px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input, textarea, button {
+      padding: 10px;
+      font-size: 1em;
+    }
+    button {
+      background: #004080;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0066cc;
+    }
+      </style>
+</head>
+<header class="header">
+
+    <div class="logo-container">
+
+        <img src="https://upload.wikimedia.org/wikipedia/en/e/e3/Jawaharlal_Nehru_Technological_University%2C_Anantapur_logo.png"
+        alt="JNTUA Logo"
+        class="logo">
+
+    </div>
+
+    <div class="title-container">
+
+        <h1>
+            MASTER OF COMPUTER APPLICATIONS ALUMNI ASSOCIATION
+        </h1>
+
+        <p>
+            Erstwhile Anantapur Engineering College (AEC) | JNTUACEA
+        </p>
+
+        <h3>
+            ANECAA
+        </h3>
+
+    </div>
+
+    <div class="logo-container">
+
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjTJGmFOivb7fYptO4ggVUdu1gWvHzrj72A&s"
+        alt="ANECAA Logo"
+        class="logo">
+
+    </div>
+
+</header>
+<body class="contact">
+  <header>
+    <h1>Contact</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="committee.html">Committee</a>
+      <a href="register.html">Register</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Contact Information</h2>
+    <p>Anantapur Engineering College Alumni Association (ANECAA)</p>
+    <p>📧 info.anecaa.alp@gmail.com</p>
+    <p>📞 9440521774</p>
+    <p>Monday – Saturday, 9:00 AM – 5:00 PM</p>
+
+    <h3>Send Message</h3>
+    <form id="messageForm">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+      <input type="text" id="subject" placeholder="Subject" required>
+      <textarea id="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+    <p id="formMsg"></p>
+  </main>
+
+  <footer>
+    <p>&copy; College Alumni Association</p>
+  </footer>
+  <div id="bg-slider"></div>
+
+<script>
+
+const images = [
+
+"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhg_5mk-RMF3K5S7L0UxdGPSO4fko3MUUtAg&s",
+
+"https://cse-five.vercel.app/static/media/cse.e9e75caa0c6bb2acec36.jpg",
+
+"https://www.jntuacea.ac.in/assets/Hero%2018-DDBKdca-.png",
+
+"https://www.jntuacea.ac.in/assets/Hero%2017-QwyKNV5o.png"
+
+];
+
+let current = 0;
+
+const slider =
+document.getElementById(
+"bg-slider"
+);
+
+function changeBackground(){
+
+    slider.style.backgroundImage =
+    `url('${images[current]}')`;
+
+    current =
+    (current + 1) %
+    images.length;
+
+}
+
+changeBackground();
+
+setInterval(
+changeBackground,
+5000
+);
+
+</script>
+</body>
+</html>

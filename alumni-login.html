@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alumni Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<div id="bg-slider"></div>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="logo-container">
+
+        <img src="https://upload.wikimedia.org/wikipedia/en/e/e3/Jawaharlal_Nehru_Technological_University%2C_Anantapur_logo.png"
+        alt="JNTUA Logo"
+        class="logo">
+
+    </div>
+
+    <div class="title-container">
+
+        <h1>
+            MASTER OF COMPUTER APPLICATIONS ALUMNI ASSOCIATION
+        </h1>
+
+        <p>
+            Erstwhile Anantapur Engineering College (AEC) | JNTUACEA
+        </p>
+
+        <h3>
+            ANECAA
+        </h3>
+
+    </div>
+
+    <div class="logo-container">
+
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjTJGmFOivb7fYptO4ggVUdu1gWvHzrj72A&s"
+        alt="ANECAA Logo"
+        class="logo">
+
+    </div>
+
+</header>
+
+<!-- MARQUEE -->
+
+<div class="marquee">
+
+    <marquee>
+
+        📢 Alumni Meet 2026 Registration Open |
+        📢 New Jobs Added |
+        📢 Update Your Alumni Profile |
+        📢 Stay Connected With Your Batchmates
+
+    </marquee>
+
+</div>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <a href="index.html">Home</a>
+
+    <a href="index.html#events">Events</a>
+
+    <a href="index.html#gallery">Gallery</a>
+
+    <a href="index.html#committee">Committee</a>
+
+    <a href="index.html#contact">Contact</a>
+
+    <div class="dropdown">
+
+        <button class="dropbtn">
+            Register ▼
+        </button>
+
+        <div class="dropdown-content">
+
+            <a href="alumni-register.html">
+                Alumni Register
+            </a>
+
+            <a href="admin-register.html">
+                Admin Register
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="dropdown">
+
+        <button class="dropbtn">
+            Login ▼
+        </button>
+
+        <div class="dropdown-content">
+
+            <a href="alumni-login.html">
+                Alumni Login
+            </a>
+
+            <a href="admin-login.html">
+                Admin Login
+            </a>
+
+        </div>
+
+    </div>
+
+    <a href="index.html#jobs">
+        Job Board
+    </a>
+
+</nav>
+
+<!-- LOGIN SECTION -->
+
+<section class="login-section">
+
+    <h2 class="section-title">
+        Alumni Login
+    </h2>
+
+    <div class="container">
+
+        <form id="alumniLoginForm" class="form-container">
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Email ID"
+                required>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required>
+
+            <button type="submit">
+                Login
+            </button>
+<p>
+<a href="forgot-password.html">
+Forgot Password?
+</a>
+</p>
+            <p id="loginMsg"></p>
+
+        </form>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+    <p>
+        MCA Alumni Association |
+        JNTUACEA
+    </p>
+
+</footer>
+
+<!-- LOGIN SCRIPT -->
+
+<script>
+
+    document.getElementById(
+        "alumniLoginForm"
+    ).addEventListener(
+        "submit",
+        async (e) => {
+
+            e.preventDefault();
+
+            const email =
+                e.target.email.value;
+
+            const password =
+                e.target.password.value;
+
+            try {
+
+                const res =
+                    await fetch(
+                        "/users/login",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                email,
+                                password
+                            })
+                        }
+                    );
+
+                const data =
+                    await res.json();
+
+                document.getElementById(
+                    "loginMsg"
+                ).textContent =
+                    data.message ||
+                    data.error;
+
+              if(data.message){
+
+    console.log("LOGIN SUCCESS");
+    console.log(data);
+
+    localStorage.setItem(
+        "alumniUser",
+        JSON.stringify(data.user)
+    );
+
+    alert("Login Successful");
+
+    window.location.href =
+    "/alumni-dashboard.html";
+}
+                }
+
+            catch (err) {
+
+                document.getElementById(
+                    "loginMsg"
+                ).textContent =
+                    "Server Error";
+
+            }
+
+        });
+
+</script>
+<div id="bg-slider"></div>
+
+<script>
+
+const images = [
+
+"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhg_5mk-RMF3K5S7L0UxdGPSO4fko3MUUtAg&s",
+
+"https://cse-five.vercel.app/static/media/cse.e9e75caa0c6bb2acec36.jpg",
+
+"https://www.jntuacea.ac.in/assets/Hero%2018-DDBKdca-.png",
+
+"https://www.jntuacea.ac.in/assets/Hero%2017-QwyKNV5o.png"
+
+];
+
+let current = 0;
+
+const slider =
+document.getElementById(
+"bg-slider"
+);
+
+function changeBackground(){
+
+    slider.style.backgroundImage =
+    `url('${images[current]}')`;
+
+    current =
+    (current + 1) %
+    images.length;
+
+}
+
+changeBackground();
+
+setInterval(
+changeBackground,
+5000
+);
+
+</script>
+</body>
+</html>

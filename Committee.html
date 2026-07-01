@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Committee - Alumni Association</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-attachment: fixed;   /* scrolling effect */
+      background-size: cover;         /* fills screen without stretching */
+      background-position: center;    /* centers image */
+      color: white;
+    }
+    header, main, footer, section {
+      background: rgba(0,0,0,0.6); /* overlay for readability */
+      padding: 20px;
+      border-radius: 8px;
+    }
+    nav {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+    }
+    nav a:hover {
+      background: #0066cc;
+      border-radius: 4px;
+    }
+    .committee-container{
+    max-width:1200px;
+    margin:auto;
+    padding:40px 20px;
+}
+
+.committee-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:60px;
+    margin-bottom:80px;
+    flex-wrap:wrap;
+}
+
+.committee-row.reverse{
+    flex-direction:row-reverse;
+}
+
+.committee-photo img{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid white;
+    box-shadow:0 0 20px rgba(0,0,0,.15);
+}
+
+.committee-info{
+    max-width:500px;
+}
+
+.committee-info h2{
+    color:#003366;
+    margin-bottom:10px;
+}
+
+.committee-info h3{
+    color:#1f4fa3;
+    margin-bottom:15px;
+}
+
+.committee-info p{
+    margin:8px 0;
+    font-size:18px;
+}
+
+.committee-info .tenure{
+    color:#1f4fa3;
+    font-weight:bold;
+}
+
+@media(max-width:768px){
+
+    .committee-row,
+    .committee-row.reverse{
+        flex-direction:column;
+        text-align:center;
+    }
+
+}
+#bg-slider{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    z-index:-2;
+
+    transition:background-image 1.5s ease-in-out;
+
+}
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.45);
+
+    z-index:-1;
+
+}
+
+.logo{
+    width:100px;
+    height:100px;
+}
+
+.header{
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px;
+    color:black;
+}
+
+.title-container{
+    text-align:center;
+}
+
+.member-photo{
+
+    width:180px;
+    height:180px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:5px solid white;
+
+    box-shadow:0 0 15px rgba(0,0,0,.2);
+
+}
+  </style>
+</head>
+<header class="header">
+
+    <div class="logo-container">
+
+        <img src="https://upload.wikimedia.org/wikipedia/en/e/e3/Jawaharlal_Nehru_Technological_University%2C_Anantapur_logo.png"
+        alt="JNTUA Logo"
+        class="logo">
+
+    </div>
+
+    <div class="title-container">
+
+        <h1>
+            MASTER OF COMPUTER APPLICATIONS ALUMNI ASSOCIATION
+        </h1>
+
+        <p>
+            Erstwhile Anantapur Engineering College (AEC) | JNTUACEA
+        </p>
+
+        <h3>
+            ANECAA
+        </h3>
+
+    </div>
+
+    <div class="logo-container">
+
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjTJGmFOivb7fYptO4ggVUdu1gWvHzrj72A&s"
+        alt="ANECAA Logo"
+        class="logo">
+
+    </div>
+
+</header>
+<body class="committee">
+  <header>
+    <h1>Committee</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+      <a href="committee.html">Committee</a>
+      <a href="register.html">Register</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+ <main>
+
+<h2 style="text-align:center;">
+Core Managing Committee
+</h2>
+
+<p style="text-align:center;">
+Meet the leaders and members of our alumni association
+</p>
+
+<div
+id="committeeContainer"
+class="committee-container">
+</div>
+
+</main>
+  <footer>
+    <p>&copy;College Alumni Association</p>
+  </footer>
+  <div id="bg-slider"></div>
+
+<script>
+
+const images = [
+
+"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhg_5mk-RMF3K5S7L0UxdGPSO4fko3MUUtAg&s",
+
+"https://cse-five.vercel.app/static/media/cse.e9e75caa0c6bb2acec36.jpg",
+
+"https://www.jntuacea.ac.in/assets/Hero%2018-DDBKdca-.png",
+
+"https://www.jntuacea.ac.in/assets/Hero%2017-QwyKNV5o.png"
+
+];
+
+let current = 0;
+
+const slider =
+document.getElementById(
+"bg-slider"
+);
+
+function changeBackground(){
+
+    slider.style.backgroundImage =
+    `url('${images[current]}')`;
+
+    current =
+    (current + 1) %
+    images.length;
+
+}
+
+changeBackground();
+
+setInterval(
+changeBackground,
+5000
+);
+async function loadCommittee(){
+
+    try{
+
+        const res =
+        await fetch("http://localhost:5000/committee");
+
+        const members =
+        await res.json();
+
+        const container =
+        document.getElementById(
+        "committeeContainer"
+        );
+
+        container.innerHTML = "";
+
+        members.forEach((member,index)=>{
+
+            container.innerHTML += `
+
+            <div class="committee-row ${index % 2 ? 'reverse' : ''}">
+
+                <div class="committee-photo">
+
+                    <img
+                    src="${member.photo}"
+                    class="member-photo">
+
+                </div>
+
+                <div class="committee-info">
+
+                    <h2>
+                    ${member.Name}
+                    </h2>
+
+                    <h3>
+                    ${member.role}
+                    </h3>
+
+                    <p>
+                    📧 ${member.email}
+                    </p>
+
+                    <p>
+                    📞 ${member.mobile}
+                    </p>
+
+                    <p class="tenure">
+                    ${member.tenure}
+                    </p>
+
+                </div>
+
+            </div>
+
+            `;
+
+        });
+
+    }
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+loadCommittee();
+
+</script>
+</body>
+</html>

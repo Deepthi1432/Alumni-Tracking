@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  
+  <section>
+    <h2>Manage Events</h2>
+    <form id="eventForm">
+      <input type="text" id="eventTitle" placeholder="Event Title" required>
+      <input type="text" id="eventDate" placeholder="Event Date" required>
+      <textarea id="eventDesc" placeholder="Event Description"></textarea>
+      <button type="submit">Add Event</button>
+    </form>
+    <ul id="eventList"></ul>
+  </section>
+
+  <section>
+    <h2>Manage Users</h2>
+    <ul id="userList"></ul>
+  </section>
+
+  <section>
+    <h2>Manage Gallery</h2>
+    <form id="galleryForm" enctype="multipart/form-data">
+      <input type="file" id="galleryImage" required>
+      <input type="text" id="galleryCaption" placeholder="Caption">
+      <button type="submit">Upload Image</button>
+    </form>
+    <ul id="galleryList"></ul>
+  </section>
+  <section>
+  <h2>Manage Committee</h2>
+  <form id="committeeForm">
+    <input type="text" id="cName" placeholder="Name" required>
+    <input type="text" id="cPosition" placeholder="Position" required>
+    <input type="email" id="cEmail" placeholder="Email" required>
+    <input type="text" id="cPhone" placeholder="Phone" required>
+    <input type="text" id="cTenure" placeholder="Tenure" required>
+    <input type="text" id="cPhoto" placeholder="Photo URL">
+    <button type="submit">Add Member</button>
+  </form>
+  <ul id="committeeList"></ul>
+</section>
+<section>
+  <h2>View Alumni</h2>
+  <table id="alumniTable" border="1" style="width:100%; text-align:left;">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Admission No</th>
+        <th>Branch</th>
+        <th>Passed Out Year</th>
+        <th>Working Status</th>
+        <th>Designation</th>
+        <th>Company</th>
+        <th>Place</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody id="alumniBody"></tbody>
+  </table>
+</section>
+<section>
+  <h2>View Alumni</h2>
+  <table id="alumniTable" border="1" style="width:100%; text-align:left;">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Admission No</th>
+        <th>Branch</th>
+        <th>Passed Out Year</th>
+        <th>Working Status</th>
+        <th>Designation</th>
+        <th>Company</th>
+        <th>Place</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="alumniBody"></tbody>
+  </table>
+</section>
+<section>
+  <h2>Search Alumni</h2>
+  <input type="text" id="searchName" placeholder="Search by Name">
+  <input type="text" id="searchBranch" placeholder="Search by Branch">
+  <select id="searchYear">
+    <option value="">All Years</option>
+  </select>
+  <button onclick="searchAlumni()">Search</button>
+</section>
+
+<section>
+  <h2>View Alumni</h2>
+  <table id="alumniTable" border="1" style="width:100%; text-align:left;">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Admission No</th>
+        <th>Branch</th>
+        <th>Passed Out Year</th>
+        <th>Working Status</th>
+        <th>Designation</th>
+        <th>Company</th>
+        <th>Place</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="alumniBody"></tbody>
+  </table>
+</section>
+<button onclick="downloadAlumniExcel()">Download Alumni Excel</button>
+<section>
+  <h2>Send Mass Notification</h2>
+  <form id="notifyForm">
+    <input type="text" id="notifySubject" placeholder="Subject" required>
+    <textarea id="notifyMessage" placeholder="Message" required></textarea>
+    <button type="submit">Send Notification</button>
+  </form>
+  <p id="notifyMsg"></p>
+</section>
+<section>
+  <h2>Manage Announcements</h2>
+  <form id="announcementForm">
+    <input type="text" id="announcementText" placeholder="Enter announcement" required>
+    <button type="submit">Add Announcement</button>
+  </form>
+  <ul id="announcementList"></ul>
+</section>
+<section>
+  <h2>Send Mass Notification</h2>
+  <form id="notifyForm">
+    <input type="text" id="notifySubject" placeholder="Subject" required>
+    <textarea id="notifyMessage" placeholder="Message" required></textarea>
+    <button type="submit">Send Notification</button>
+  </form>
+  <p id="notifyMsg"></p>
+</section>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+  <script src="admin.js"></script>
+</body>
+</html>

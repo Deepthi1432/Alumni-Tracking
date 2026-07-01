@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alumni Dashboard</title>
+
+<link rel="stylesheet" href="css/admin-dashboard.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+.profile-card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+    text-align:center;
+}
+
+.profile-card img{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:15px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.info-box{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.info-box h4{
+    color:#003366;
+    margin-bottom:8px;
+}
+
+</style>
+<div id="bg-slider"></div>
+
+</head>
+<header class="header">
+
+    <div class="logo-container">
+
+        <img src="https://upload.wikimedia.org/wikipedia/en/e/e3/Jawaharlal_Nehru_Technological_University%2C_Anantapur_logo.png"
+        alt="JNTUA Logo"
+        class="logo">
+
+    </div>
+
+    <div class="title-container">
+
+        <h1>
+            MASTER OF COMPUTER APPLICATIONS ALUMNI ASSOCIATION
+        </h1>
+
+        <p>
+            Erstwhile Anantapur Engineering College (AEC) | JNTUACEA
+        </p>
+
+        <h3>
+            ANECAA
+        </h3>
+
+    </div>
+
+    <div class="logo-container">
+
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjTJGmFOivb7fYptO4ggVUdu1gWvHzrj72A&s"
+        alt="ANECAA Logo"
+        class="logo">
+
+    </div>
+
+</header>
+<body>
+    <div class="logo">
+        <h2>ANECAA</h2>
+    </div>
+    <div id="profilePage" class="page-section">
+    <!-- Profile Card + Info Grid -->
+</div>
+
+<div id="jobsPage" class="page-section" style="display:none;">
+    <!-- Available Jobs -->
+</div>
+
+<div id="eventsPage" class="page-section" style="display:none;">
+    <!-- Upcoming Events -->
+</div>
+
+<div id="directoryPage" class="page-section" style="display:none;">
+    <!-- Alumni Directory -->
+</div>
+<nav class="alumni-navbar">
+
+    <a href="#" onclick="showPage('profilePage')">
+        My Profile
+    </a>
+
+    <a href="#" onclick="showPage('eventsPage')">
+        Events
+    </a>
+
+    <a href="#" onclick="showPage('jobsPage')">
+        Jobs
+    </a>
+
+    <a href="#" onclick="showPage('directoryPage')">
+        Alumni Directory
+    </a>
+
+    <a href="#" onclick="logout()">
+        Logout
+    </a>
+
+</nav>
+<div class="main-content">
+
+    <div class="topbar">
+
+        <h1>
+            MCA Alumni Dashboard
+        </h1>
+
+    </div>
+
+    <div class="profile-card">
+
+        <img
+        id="profilePic"
+        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+
+        <h2 id="fullName">
+            Alumni Name
+        </h2>
+
+        <p id="email">
+            Email
+        </p>
+
+    </div>
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <h4>
+                Admission Number
+            </h4>
+
+            <p id="admissionNumber">
+                -
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h4>
+                Department
+            </h4>
+
+            <p id="department">
+                -
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h4>
+                Course
+            </h4>
+
+            <p id="course">
+                -
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h4>
+                Passed Out Year
+            </h4>
+
+            <p id="passedOutYear">
+                -
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h4>
+                Company
+            </h4>
+
+            <p id="company">
+                -
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h4>
+                Designation
+            </h4>
+
+            <p id="designation">
+                -
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h4>
+                City
+            </h4>
+
+            <p id="city">
+                -
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h4>
+                Working Status
+            </h4>
+
+            <p id="workingStatus">
+                -
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+<div id="directorySection"
+style="display:none; margin-top:30px;">
+
+<h2>
+Alumni Directory
+</h2>
+
+<input
+type="text"
+id="searchAlumni"
+placeholder="Search Name / Company / Department">
+
+<br><br>
+
+<table border="1" width="100%">
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+<th>Email</th>
+<th>Department</th>
+<th>Year</th>
+<th>Company</th>
+
+</tr>
+
+</thead>
+
+<tbody id="directoryTable">
+
+</tbody>
+
+</table>
+
+</div>
+<div class="section">
+
+<h2>
+Available Jobs
+</h2>
+
+<div id="jobList">
+
+</div>
+<button
+id="editBtn"
+onclick="openEditForm()">
+
+Edit Profile
+
+</button>
+
+Edit Profile
+<div id="editProfileSection" style="display:none; margin-top:20px;">
+
+    <h2>Edit Profile</h2>
+
+    <input
+        type="text"
+        id="editPhone"
+        placeholder="Phone Number">
+
+    <br><br>
+
+    <input
+        type="text"
+        id="editCity"
+        placeholder="City">
+
+    <br><br>
+
+    <input
+        type="text"
+        id="editCompany"
+        placeholder="Company">
+
+    <br><br>
+
+    <input
+        type="text"
+        id="editDesignation"
+        placeholder="Designation">
+
+    <br><br>
+
+    <button onclick="updateProfile()">
+        Save Changes
+    </button>
+
+</div>
+</button>
+<div class="section">
+
+<h2>
+Upcoming Events
+</h2>
+
+<div id="eventList">
+
+</div>
+
+</div>
+</div>
+<script>
+
+const user =
+JSON.parse(
+localStorage.getItem(
+"alumniUser"
+)
+);
+
+if(!user){
+
+    window.location.href =
+    "alumni-login.html";
+
+}
+
+function loadProfile(){
+
+    const user =
+    JSON.parse(
+    localStorage.getItem(
+    "alumniUser"
+    ));
+
+    if(!user){
+        window.location.href =
+        "alumni-login.html";
+        return;
+    }
+
+    document.getElementById("fullName").textContent =
+    `${user.firstName || ""} ${user.lastName || ""}`;
+
+    document.getElementById("email").textContent =
+    user.email || "-";
+
+    document.getElementById("admissionNumber").textContent =
+    user.admissionNumber || "-";
+
+    document.getElementById("department").textContent =
+    user.department || "-";
+
+    document.getElementById("course").textContent =
+    user.course || "-";
+
+    document.getElementById("passedOutYear").textContent =
+    user.passedOutYear || "-";
+
+    document.getElementById("company").textContent =
+    user.company || "-";
+
+    document.getElementById("designation").textContent =
+    user.designation || "-";
+
+    document.getElementById("city").textContent =
+    user.city || "-";
+
+    document.getElementById("workingStatus").textContent =
+    user.workingStatus || "-";
+}
+function logout(){
+    localStorage.removeItem(
+    "alumniUser"
+    );
+    window.location.href =
+    "alumni-login.html";
+}
+console.log(JSON.parse(localStorage.getItem("alumniUser")));
+loadProfile();
+showPage("profilePage");
+</script>
+<div id="bg-slider"></div>
+
+<script>
+
+const images = [
+
+"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhg_5mk-RMF3K5S7L0UxdGPSO4fko3MUUtAg&s",
+
+"https://cse-five.vercel.app/static/media/cse.e9e75caa0c6bb2acec36.jpg",
+
+"https://www.jntuacea.ac.in/assets/Hero%2018-DDBKdca-.png",
+
+"https://www.jntuacea.ac.in/assets/Hero%2017-QwyKNV5o.png"
+
+];
+
+let current = 0;
+
+const slider =
+document.getElementById(
+"bg-slider"
+);
+
+function changeBackground(){
+
+    slider.style.backgroundImage =
+    `url('${images[current]}')`;
+
+    current =
+    (current + 1) %
+    images.length;
+
+}
+
+changeBackground();
+
+setInterval(
+changeBackground,
+5000
+);
+function openEditForm(){
+
+    document.getElementById(
+    "editProfileSection"
+    ).style.display = "block";
+
+    document.getElementById(
+    "editPhone"
+    ).value =
+    user.phone || "";
+
+    document.getElementById(
+    "editCity"
+    ).value =
+    user.city || "";
+
+    document.getElementById(
+    "editCompany"
+    ).value =
+    user.company || "";
+
+    document.getElementById(
+    "editDesignation"
+    ).value =
+    user.designation || "";
+
+}
+
+async function updateProfile(){
+
+    try{
+
+        const res =
+        await fetch(
+
+        `http://localhost:5000/users/update/${user._id}`,
+
+        {
+            method:"PUT",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+
+                phone:
+                document.getElementById(
+                "editPhone"
+                ).value,
+
+                city:
+                document.getElementById(
+                "editCity"
+                ).value,
+
+                company:
+                document.getElementById(
+                "editCompany"
+                ).value,
+
+                designation:
+                document.getElementById(
+                "editDesignation"
+                ).value
+
+            })
+
+        });
+
+        const data =
+        await res.json();
+
+        alert(
+        data.message
+        );
+
+        localStorage.setItem(
+        "alumniUser",
+        JSON.stringify(
+        data.user
+        ));
+
+        loadProfile();
+
+        document.getElementById(
+        "editProfileSection"
+        ).style.display =
+        "none";
+
+    }
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+loadProfile();
+async function showDirectory(){
+
+document.getElementById(
+"directorySection"
+).style.display = "block";
+
+try{
+
+const res =
+await fetch(
+"http://localhost:5000/users/directory"
+);
+
+const alumni =
+await res.json();
+
+const table =
+document.getElementById(
+"directoryTable"
+);
+
+table.innerHTML = "";
+
+alumni.forEach(a=>{
+
+table.innerHTML += `
+
+<tr>
+
+<td>
+${a.firstName}
+${a.lastName}
+</td>
+
+<td>
+${a.email}
+</td>
+
+<td>
+${a.department || "-"}
+</td>
+
+<td>
+${a.passedOutYear || "-"}
+</td>
+
+<td>
+${a.company || "-"}
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+catch(err){
+
+console.log(err);
+
+}
+
+}
+document.getElementById(
+"searchAlumni"
+)?.addEventListener(
+"keyup",
+function(){
+
+const value =
+this.value.toLowerCase();
+
+const rows =
+document.querySelectorAll(
+"#directoryTable tr"
+);
+
+rows.forEach(row=>{
+
+row.style.display =
+
+row.innerText
+.toLowerCase()
+.includes(value)
+
+? ""
+
+: "none";
+});
+});
+async function loadEvents(){
+
+const res =
+await fetch(
+"http://localhost:5000/events"
+);
+
+const events =
+await res.json();
+
+const container =
+document.getElementById(
+"eventList"
+);
+
+container.innerHTML = "";
+
+events.forEach(event=>{
+
+container.innerHTML += `
+
+<div class="card">
+
+<h3>
+${event.title}
+</h3>
+
+<p>
+${event.description}
+</p>
+
+<p>
+${event.date}
+</p>
+
+<p>
+${event.venue}
+</p>
+
+<button
+onclick="registerEvent('${event._id}')">
+
+Register
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+async function registerEvent(eventId){
+
+const user =
+JSON.parse(
+localStorage.getItem(
+"alumniUser"
+)
+);
+
+const res =
+await fetch(
+
+"http://localhost:5000/event-registration",
+
+{
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:JSON.stringify({
+
+eventId,
+
+alumniId:
+user._id,
+
+alumniName:
+user.firstName +
+" " +
+user.lastName,
+
+email:
+user.email
+
+})
+
+}
+
+);
+
+const data =
+await res.json();
+
+alert(
+data.message
+);
+
+}
+loadEvents();
+function showPage(pageId){
+
+    document
+    .querySelectorAll(".page-section")
+    .forEach(section=>{
+
+        section.style.display = "none";
+
+    });
+    document
+    .getElementById(pageId)
+    .style.display = "block";
+
+}
+</script>
+</body>
+
+</html>
