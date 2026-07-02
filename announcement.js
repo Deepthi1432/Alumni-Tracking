@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const Announcement = require("../models/Announcement");
+const Announcement = require("./Announcement");
 const notifyAllAlumni = require("../utils/notifyAllAlumni");
 const nodemailer = require("nodemailer");
-const Notification = require("../models/Notification");
+const Notification = require("./Notification");
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
