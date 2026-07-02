@@ -10,7 +10,7 @@ const nodemailer = require("nodemailer");
 
 const User = require("./User");
 const Admin = require("./Admin");
-const adminAuth = require("./middleware/auth");
+const adminAuth = require("./auth");
 
 /* =======================================================
    ADMIN REGISTER
