@@ -3,7 +3,7 @@ const router = express.Router();
 const Job = require('./Job');
 const User = require('./User');
 const nodemailer = require('nodemailer');
-const notifyAllAlumni = require("../utils/notifyAllAlumni");
+const notifyAllAlumni = require("./notifyAllAlumni");
 const Notification = require("./Notification");
 const transporter = nodemailer.createTransport({
     service: "gmail",
