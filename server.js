@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -10,62 +9,32 @@ const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, {
-    cors: { origin: "*" }
-});
+const io = socketIo(server, { cors: { origin: "*" } });
 
-/* =========================
-   MODELS (Updated paths)
-========================= */
+// MODELS
 const MassMail = require("./MassMail");
 const User = require("./User");
 
-/* =========================
-   ROUTES (Updated paths)
-========================= */
-const notificationRoutes = require("./Notification"); // Please verify the exact filename on your GitHub
-const registrationRoutes = require("./EventRegistration");
+// ROUTES
+const notificationRoutes = require("./notifications");
+const registrationRoutes = require("./eventRegistration");
 const userRoutes = require("./users");
 const adminRoutes = require("./admin");
-const jobRoutes = require("./Job");
-const committeeRoutes = require("./Committee");
-const eventRoutes = require("./Event");
-const announcementRoutes = require("./Announcement");
-const galleryRoutes = require("./Gallery");
-const contactRoutes = require("./Contact");
+const jobRoutes = require("./jobs");
+const committeeRoutes = require("./committee");
+const eventRoutes = require("./events");
+const announcementRoutes = require("./announcement");
+const galleryRoutes = require("./gallery");
+const contactRoutes = require("./contact");
 
-/* =========================
-   NODEMAILER CONFIG
-========================= */
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    tls: { rejectUnauthorized: false }
-});
-
-/* =========================
-   MIDDLEWARE
-========================= */
-app.use(cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-}));
-
+// MIDDLEWARE
+app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT", "DELETE"], allowedHeaders: ["Content-Type", "Authorization"] }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static("public"));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-/* =========================
-   ROUTE REGISTRATION
-========================= */
+// ROUTES
 app.use("/users", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/admin/jobs", jobRoutes);
@@ -77,123 +46,29 @@ app.use("/admin/contacts", contactRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/event-registration", registrationRoutes);
 
-/* =========================
-   DATABASE CONNECTION
-========================= */
-mongoose.connect("mongodb://localhost:27017/alumni")
+// DATABASE
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/alumni")
     .then(() => console.log("MongoDB connected successfully"))
     .catch(err => console.error("MongoDB connection error:", err));
 
-/* =========================
-   MASS EMAIL + HISTORY SAVE
-========================= */
+// MASS EMAIL
 app.post("/admin/send-mass-email", async (req, res) => {
     try {
         const { mailSubject, mailMessage } = req.body;
-
-        if (!mailSubject || !mailMessage) {
-            return res.status(400).json({
-                success: false,
-                error: "Subject and message are required."
-            });
-        }
-
-        const users = await User.find(
-            { email: { $exists: true, $ne: "" } },
-            "email"
-        );
-
+        const users = await User.find({ email: { $exists: true, $ne: "" } }, "email");
         const emailList = users.map(u => u.email).filter(Boolean);
-
-        if (emailList.length === 0) {
-            return res.status(404).json({
-                success: false,
-                error: "No alumni emails found."
-            });
-        }
-
-        const mailOptions = {
-            from: `"Alumni Association" <${process.env.EMAIL_USER}>`,
-            bcc: emailList,
-            subject: mailSubject,
-            html: `
-                <div style="font-family: Arial; padding: 20px;">
-                    <h2>Alumni Notification</h2>
-                    <div style="padding:10px;background:#f5f5f5;">
-                        ${mailMessage}
-                    </div>
-                </div>
-            `
-        };
-
-        await transporter.sendMail(mailOptions);
-
-        const newMail = new MassMail({
-            subject: mailSubject,
-            message: mailMessage,
-            recipientsCount: emailList.length,
-            sentAt: new Date()
+        
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com", port: 587, secure: false,
+            auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
         });
 
+        await transporter.sendMail({ from: process.env.EMAIL_USER, bcc: emailList, subject: mailSubject, html: mailMessage });
+        const newMail = new MassMail({ subject: mailSubject, message: mailMessage, recipientsCount: emailList.length, sentAt: new Date() });
         await newMail.save();
-
-        res.json({
-            success: true,
-            message: "Mass email sent and saved."
-        });
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, error: err.message });
-    }
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-/* =========================
-   GET MASS MAIL HISTORY
-========================= */
-app.get("/admin/mail-history", async (req, res) => {
-    try {
-        const mails = await MassMail.find().sort({ _id: -1 });
-
-        const formatted = mails.map(mail => ({
-            _id: mail._id,
-            subject: mail.subject,
-            message: mail.message,
-            recipientsCount: mail.recipientsCount,
-            sentAt: mail.sentAt || mail.createdAt
-        }));
-
-        res.json(formatted);
-
-    } catch (error) {
-        console.error("Mail history error:", error);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-/* =========================
-   DELETE MASS MAIL HISTORY
-========================= */
-app.delete("/api/massmail/:id", async (req, res) => {
-    try {
-        await MassMail.findByIdAndDelete(req.params.id);
-        res.json({ message: "Deleted successfully" });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-/* =========================
-   SOCKET.IO
-========================= */
-io.on("connection", socket => {
-    console.log("Client connected");
-});
-
-/* =========================
-   START SERVER
-========================= */
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
