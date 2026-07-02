@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const Committee = require("../models/Committee");
+const Committee = require("./Committee");
 
 module.exports = (io) => {
     const router = express.Router();
