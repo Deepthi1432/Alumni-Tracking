@@ -1,6 +1,6 @@
 // backend/routes/contact.js
 const express = require('express');
-const Contact = require('../models/Contact');
+const Contact = require('./Contact');
 
 module.exports = (io) => {
   const router = express.Router();
