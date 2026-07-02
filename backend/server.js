@@ -1,4 +1,3 @@
-// backend/server.js
 require("dotenv").config();
 
 const express = require("express");
@@ -11,31 +10,33 @@ const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
-const MassMail = require("./models/MassMail");
 const io = socketIo(server, {
-    cors: {
-        origin: "*"
-    }
+    cors: { origin: "*" }
 });
 
-/* ============================================================
-   ROUTES IMPORT
-============================================================ */
-const notificationRoutes = require("./routes/notifications");
-const registrationRoutes = require("./routes/eventRegistration");
+/* =========================
+   MODELS (Updated paths)
+========================= */
+const MassMail = require("./MassMail");
+const User = require("./User");
 
-const userRoutes = require("./routes/users");
-const adminRoutes = require("./routes/admin");
-const jobRoutes = require("./routes/jobs");
-const committeeRoutes = require("./routes/committee"); // function returning router
-const eventRoutes = require("./routes/events");
-const announcementRoutes = require("./routes/announcement");
-const galleryRoutes = require("./routes/gallery");
-const contactRoutes = require("./routes/contact");
+/* =========================
+   ROUTES (Updated paths)
+========================= */
+const notificationRoutes = require("./Notification"); // Please verify the exact filename on your GitHub
+const registrationRoutes = require("./EventRegistration");
+const userRoutes = require("./users");
+const adminRoutes = require("./admin");
+const jobRoutes = require("./Job");
+const committeeRoutes = require("./Committee");
+const eventRoutes = require("./Event");
+const announcementRoutes = require("./Announcement");
+const galleryRoutes = require("./Gallery");
+const contactRoutes = require("./Contact");
 
-/* ============================================================
-   NODEMAILER EMAIL TRANSPORTER CONFIGURATION
-============================================================ */
+/* =========================
+   NODEMAILER CONFIG
+========================= */
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -44,9 +45,7 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
-    tls: {
-        rejectUnauthorized: false
-    }
+    tls: { rejectUnauthorized: false }
 });
 
 /* =========================
@@ -61,143 +60,37 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// static folders
 app.use(express.static("public"));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// other routes
-app.use("/event-registration", registrationRoutes);
-app.use("/notifications", notificationRoutes);
-
 /* =========================
-   DATABASE
-========================= */
-mongoose.connect("mongodb://localhost:27017/alumni")
-    .then(() => {
-        console.log("MongoDB connected successfully");
-    })
-    .catch(err => {
-        console.error("MongoDB connection error:", err);
-    });
-
-/* ============================================================
-   DIAGNOSTIC ROUTE CHECKS
-============================================================ */
-console.log("--- Route Initialization Verifications ---");
-console.log("users router status:", typeof userRoutes);
-console.log("admin router status:", typeof adminRoutes);
-console.log("jobs router status:", typeof jobRoutes);
-console.log("committee router status:", typeof committeeRoutes);
-console.log("events router status:", typeof eventRoutes);
-console.log("announcement router status:", typeof announcementRoutes);
-console.log("gallery router status:", typeof galleryRoutes);
-console.log("contact router status:", typeof contactRoutes);
-console.log("-------------------------------------------");
-
-/* =========================
-   API ROUTE REGISTRATION
+   ROUTE REGISTRATION
 ========================= */
 app.use("/users", userRoutes);
 app.use("/admin", adminRoutes);
-
-// IMPORTANT: committeeRoutes must be called with io
 app.use("/admin/jobs", jobRoutes);
 app.use("/admin/committee", committeeRoutes(io));
 app.use("/admin/events", eventRoutes);
 app.use("/admin/announcements", announcementRoutes);
 app.use("/admin/gallery", galleryRoutes);
 app.use("/admin/contacts", contactRoutes);
-
-/* ============================================================
-   REAL-TIME ALUMNI PLACEMENT CHAT-INQUIRY EMAIL ROUTE
-============================================================ */
-app.post("/admin/jobs/chat-inquiry", async (req, res) => {
-    try {
-        const {
-            applicantName,
-            applicantEmail,
-            inquiryMessage,
-            jobTitle,
-            company,
-            posterEmail
-        } = req.body;
-
-        if (!applicantEmail || !inquiryMessage) {
-            return res.status(400).json({
-                error: "Missing required messaging payload values."
-            });
-        }
-
-        const targetedPosterEmail =
-            posterEmail && posterEmail !== "Admin Cluster"
-                ? posterEmail
-                : process.env.EMAIL_USER;
-
-        const alertToPosterOptions = {
-            from: `"ANECAA Career Interaction Gateway" <${process.env.EMAIL_USER}>`,
-            to: targetedPosterEmail,
-            subject: `New Inquiry: ${applicantName} regarding your ${jobTitle} post`,
-            html: `
-                <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #28a745; border-radius: 8px;">
-                    <h3 style="color: #28a745;">You have received a candidate referral inquiry!</h3>
-                    <p>Hello,</p>
-                    <p>An alumnus has sent an inquiry regarding <strong>${jobTitle} at ${company}</strong>.</p>
-                    <div style="background: #f4f6f9; padding: 15px; border-radius: 4px; margin: 15px 0; font-style: italic;">
-                        "${inquiryMessage}"
-                    </div>
-                    <hr style="border: 0; border-top: 1px solid #ddd;">
-                    <p><strong>Applicant details:</strong></p>
-                    <ul>
-                        <li><strong>Name:</strong> ${applicantName || "N/A"}</li>
-                        <li><strong>Email:</strong> <a href="mailto:${applicantEmail}">${applicantEmail}</a></li>
-                    </ul>
-                </div>
-            `
-        };
-
-        const alertToApplicantOptions = {
-            from: `"ANECAA Career Interaction Gateway" <${process.env.EMAIL_USER}>`,
-            to: applicantEmail,
-            subject: `Your inquiry for ${jobTitle} at ${company} was sent`,
-            html: `
-                <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #004080; border-radius: 8px;">
-                    <h3 style="color: #004080;">Your inquiry was sent successfully!</h3>
-                    <p>Dear ${applicantName || "Applicant"},</p>
-                    <p>Your message regarding <strong>${jobTitle}</strong> at <strong>${company}</strong> has been sent.</p>
-                    <p><strong>Your message:</strong></p>
-                    <div style="background: #fafafa; padding: 12px; border: 1px dashed #ccc; font-size: 13px;">
-                        ${inquiryMessage}
-                    </div>
-                    <p>Regards,<br><strong>ANECAA Administration Team</strong></p>
-                </div>
-            `
-        };
-
-        await Promise.all([
-            transporter.sendMail(alertToPosterOptions),
-            transporter.sendMail(alertToApplicantOptions)
-        ]);
-
-        res.json({
-            success: true,
-            message: "Inquiry emails sent successfully."
-        });
-    } catch (error) {
-        console.error("Chat inquiry email error:", error);
-        res.status(500).json({
-            error: error.message || "Failed to send inquiry emails."
-        });
-    }
+app.use("/notifications", notificationRoutes);
+app.use("/event-registration", registrationRoutes);
+app.get('/', (req, res) => {
+    res.send('Alumni Tracking System is running!');
 });
+/* =========================
+   DATABASE CONNECTION
+========================= */
+mongoose.connect("mongodb://localhost:27017/alumni")
+    .then(() => console.log("MongoDB connected successfully"))
+    .catch(err => console.error("MongoDB connection error:", err));
 
-/* ============================================================
-   MASS EMAIL NOTIFICATION ROUTE
-============================================================ */
+/* =========================
+   MASS EMAIL + HISTORY SAVE
+========================= */
 app.post("/admin/send-mass-email", async (req, res) => {
     try {
-        const User = require("./models/User");
-        const MassMail = require("./models/MassMail");
-
         const { mailSubject, mailMessage } = req.body;
 
         if (!mailSubject || !mailMessage) {
@@ -207,105 +100,96 @@ app.post("/admin/send-mass-email", async (req, res) => {
             });
         }
 
-        // Get all alumni emails
-        const users = await User.find({ role: "alumni" }, "email");
-        const emailList = users
-            .filter(user => user.email)
-            .map(user => user.email);
+        const users = await User.find(
+            { email: { $exists: true, $ne: "" } },
+            "email"
+        );
+
+        const emailList = users.map(u => u.email).filter(Boolean);
 
         if (emailList.length === 0) {
             return res.status(404).json({
                 success: false,
-                error: "No alumni email addresses found."
+                error: "No alumni emails found."
             });
         }
 
-        // Send email
         const mailOptions = {
-            from: `"ANECAA Administration" <${process.env.EMAIL_USER}>`,
+            from: `"Alumni Association" <${process.env.EMAIL_USER}>`,
             bcc: emailList,
             subject: mailSubject,
             html: `
-                <div style="font-family: Arial, sans-serif; padding: 20px;">
-                    <h2 style="color:#004080;">
-                        ANECAA Alumni Association Notification
-                    </h2>
-
-                    <div style="
-                        background:#f8f9fa;
-                        padding:15px;
-                        border-left:4px solid #004080;
-                        margin-top:15px;
-                    ">
+                <div style="font-family: Arial; padding: 20px;">
+                    <h2>Alumni Notification</h2>
+                    <div style="padding:10px;background:#f5f5f5;">
                         ${mailMessage}
                     </div>
-
-                    <br>
-
-                    <p>
-                        Regards,<br>
-                        <strong>ANECAA Administration Team</strong>
-                    </p>
                 </div>
             `
         };
 
         await transporter.sendMail(mailOptions);
 
-        // STORE MAIL IN DATABASE
-        const savedMail = new MassMail({
+        const newMail = new MassMail({
             subject: mailSubject,
             message: mailMessage,
             recipientsCount: emailList.length,
-            sentTo: emailList,
-            sentBy: "Admin"
+            sentAt: new Date()
         });
 
-        await savedMail.save();
+        await newMail.save();
 
-        res.status(200).json({
+        res.json({
             success: true,
-            message: "Mass email sent and stored successfully.",
-            mail: savedMail
+            message: "Mass email sent and saved."
         });
 
-    } catch (error) {
-        console.error("Mass Mail Error:", error);
-
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, error: err.message });
     }
 });
 
+/* =========================
+   GET MASS MAIL HISTORY
+========================= */
 app.get("/admin/mail-history", async (req, res) => {
     try {
-        const MassMail = require("./models/MassMail");
-
-        const mails = await MassMail.find().sort({ createdAt: -1 });
+        const mails = await MassMail.find().sort({ _id: -1 });
 
         const formatted = mails.map(mail => ({
+            _id: mail._id,
             subject: mail.subject,
             message: mail.message,
-            recipientCount: mail.recipientsCount || 0,
-            sentAt: mail.createdAt
+            recipientsCount: mail.recipientsCount,
+            sentAt: mail.sentAt || mail.createdAt
         }));
 
-        res.status(200).json(formatted);
+        res.json(formatted);
+
     } catch (error) {
-        console.error("Mail history fetch error:", error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
+        console.error("Mail history error:", error);
+        res.status(500).json({ error: error.message });
     }
 });
+
+/* =========================
+   DELETE MASS MAIL HISTORY
+========================= */
+app.delete("/api/massmail/:id", async (req, res) => {
+    try {
+        await MassMail.findByIdAndDelete(req.params.id);
+        res.json({ message: "Deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 /* =========================
    SOCKET.IO
 ========================= */
 io.on("connection", socket => {
-    console.log("Client connected via Socket.io");
+    console.log("Client connected");
 });
 
 /* =========================
@@ -313,5 +197,5 @@ io.on("connection", socket => {
 ========================= */
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-    console.log(`Server running smoothly on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
