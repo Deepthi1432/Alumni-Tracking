@@ -76,9 +76,7 @@ app.use("/admin/gallery", galleryRoutes);
 app.use("/admin/contacts", contactRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/event-registration", registrationRoutes);
-app.get('/', (req, res) => {
-    res.send('Alumni Tracking System is running!');
-});
+
 /* =========================
    DATABASE CONNECTION
 ========================= */
@@ -192,6 +190,9 @@ io.on("connection", socket => {
     console.log("Client connected");
 });
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 /* =========================
    START SERVER
 ========================= */
