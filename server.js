@@ -1,4 +1,3 @@
-// backend/server.js
 require("dotenv").config();
 
 const express = require("express");
@@ -16,24 +15,24 @@ const io = socketIo(server, {
 });
 
 /* =========================
-   MODELS
+   MODELS (Updated paths)
 ========================= */
-const MassMail = require("./models/MassMail");
-const User = require("./models/User");
+const MassMail = require("./MassMail");
+const User = require("./User");
 
 /* =========================
-   ROUTES
+   ROUTES (Updated paths)
 ========================= */
-const notificationRoutes = require("./routes/notifications");
-const registrationRoutes = require("./routes/eventRegistration");
-const userRoutes = require("./routes/users");
-const adminRoutes = require("./routes/admin");
-const jobRoutes = require("./routes/jobs");
-const committeeRoutes = require("./routes/committee");
-const eventRoutes = require("./routes/events");
-const announcementRoutes = require("./routes/announcement");
-const galleryRoutes = require("./routes/gallery");
-const contactRoutes = require("./routes/contact");
+const notificationRoutes = require("./Notification"); // Please verify the exact filename on your GitHub
+const registrationRoutes = require("./EventRegistration");
+const userRoutes = require("./users");
+const adminRoutes = require("./admin");
+const jobRoutes = require("./Job");
+const committeeRoutes = require("./Committee");
+const eventRoutes = require("./Event");
+const announcementRoutes = require("./Announcement");
+const galleryRoutes = require("./Gallery");
+const contactRoutes = require("./Contact");
 
 /* =========================
    NODEMAILER CONFIG
@@ -129,7 +128,6 @@ app.post("/admin/send-mass-email", async (req, res) => {
 
         await transporter.sendMail(mailOptions);
 
-        // SAVE HISTORY
         const newMail = new MassMail({
             subject: mailSubject,
             message: mailMessage,
@@ -161,7 +159,7 @@ app.get("/admin/mail-history", async (req, res) => {
             _id: mail._id,
             subject: mail.subject,
             message: mail.message,
-            recipientsCount: mail.recipientsCount, // ✅ correct key
+            recipientsCount: mail.recipientsCount,
             sentAt: mail.sentAt || mail.createdAt
         }));
 
