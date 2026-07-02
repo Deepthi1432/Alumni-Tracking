@@ -1,5 +1,5 @@
 const express = require("express");
-const Gallery = require("../models/Gallery");
+const Gallery = require("./Gallery");
 
 const router = express.Router();
 
