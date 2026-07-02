@@ -46,6 +46,9 @@ app.use("/admin/gallery", galleryRoutes);
 app.use("/admin/contacts", contactRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/event-registration", registrationRoutes);
+app.get('/', (req, res) => {
+    res.send('Alumni Tracking System is running!');
+});
 
 // DATABASE
 mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/alumni")
