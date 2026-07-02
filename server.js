@@ -14,7 +14,7 @@ const io = socketIo(server, { cors: { origin: "*" } });
 // MODELS
 const MassMail = require("./MassMail");
 const User = require("./User");
-const adminAuth = require("./middleware/auth");
+const adminAuth = require("./auth");
 
 // ROUTES
 const notificationRoutes = require("./notifications");
