@@ -8,8 +8,8 @@ const jwt = require("jsonwebtoken");
 const ExcelJS = require("exceljs");
 const nodemailer = require("nodemailer");
 
-const User = require("../models/User");
-const Admin = require("../models/Admin");
+const User = require("./User");
+const Admin = require("./Admin");
 const adminAuth = require("../middleware/auth");
 
 /* =======================================================
