@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("./User");
 
 async function notifyAllAlumni(transporter, subject, html) {
     const users = await User.find({ role: "alumni" }, "email");
